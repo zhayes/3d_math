@@ -175,6 +175,40 @@ function slerp(a: Quat, b: Quat, t: number): Quat {
   return { w: ra*a.w+rb*b.w, x: ra*a.x+rb*b.x, y: ra*a.y+rb*b.y, z: ra*a.z+rb*b.z }
 }`,
         },
+        {
+          type: "text",
+          html: `
+            <h3>各表示间的转换代码</h3>
+            <p>在实际开发中经常需要切换表示。以下是最常用的转换：</p>
+          `,
+        },
+        {
+          type: "code",
+          language: "typescript",
+          code: `// === 四元数 ↔ 欧拉角 (Yaw-Pitch-Roll) ===
+function quatToEuler(q: Quat): { yaw: number; pitch: number; roll: number } {
+  const sinP = 2*(q.w*q.y - q.z*q.x)
+  const pitch = Math.abs(sinP) >= 1 ? Math.sign(sinP)*Math.PI/2 : Math.asin(sinP)
+  const yaw = Math.atan2(2*(q.w*q.y + q.x*q.z), 1 - 2*(q.y*q.y + q.x*q.x))
+  const roll = Math.atan2(2*(q.w*q.x + q.y*q.z), 1 - 2*(q.x*q.x + q.y*q.y))
+  return { yaw, pitch, roll }
+}
+function eulerToQuat(yaw: number, pitch: number, roll: number): Quat {
+  const cy=Math.cos(yaw/2), sy=Math.sin(yaw/2), cp=Math.cos(pitch/2), sp=Math.sin(pitch/2), cr=Math.cos(roll/2), sr=Math.sin(roll/2)
+  return { w: cy*cp*cr + sy*sp*sr, x: cy*sp*cr + sy*cp*sr, y: sy*cp*cr - cy*sp*sr, z: cy*cp*sr - sy*sp*cr }
+}
+// === 四元数 → 3×3 旋转矩阵 ===
+function quatToMat3(q: Quat): number[] {
+  return [1-2*(q.y*q.y+q.z*q.z), 2*(q.x*q.y-q.w*q.z), 2*(q.x*q.z+q.w*q.y),
+          2*(q.x*q.y+q.w*q.z), 1-2*(q.x*q.x+q.z*q.z), 2*(q.y*q.z-q.w*q.x),
+          2*(q.x*q.z-q.w*q.y), 2*(q.y*q.z+q.w*q.x), 1-2*(q.x*q.x+q.y*q.y)]
+}`,
+        },
+        {
+          type: "note",
+          level: "tip",
+          body: "在 Babylon.js 中，Quaternion、Vector3（欧拉角）、Matrix 三者通过 <code>toRotationMatrix()</code>、<code>toEulerAngles()</code> 等方法互转。Unity 的 Quaternion.Euler() 和 Unreal 的 FRotator 同理。实践中直接调用引擎 API，无需手写。",
+        },
       ],
     },
     {

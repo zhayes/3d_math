@@ -91,7 +91,7 @@ function drawCoordinateSystem(
     // Text billboard with transparent bg
     const texW = 128; const texH = 64
     const tex = new DynamicTexture(`tex_${text}_${labelSuffix}`, { width: texW, height: texH }, scene, false)
-    const ctx = tex.getContext()
+    const ctx = tex.getContext() as CanvasRenderingContext2D
     ctx.clearRect(0, 0, texW, texH)
     ctx.fillStyle = "rgba(8,8,14,0.55)"
     ctx.beginPath()
@@ -136,7 +136,7 @@ export function setupScene(scene: any, engine: any) {
   function makeSectionLabel(text: string, position: Vector3, colorHex: string) {
     const texW = 256; const texH = 64
     const texture = new DynamicTexture(`secTex_${text}`, { width: texW, height: texH }, scene, false)
-    const ctx = texture.getContext()
+    const ctx = texture.getContext() as CanvasRenderingContext2D
     ctx.clearRect(0, 0, texW, texH)
     ctx.fillStyle = "rgba(8,8,14,0.5)"
     ctx.beginPath()

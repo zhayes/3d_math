@@ -38,7 +38,7 @@ export default function DerivationBlock(props: {
           {(step, idx) => (
             <div class="flex gap-4">
               {/* Step number */}
-              <div class="flex-shrink-0 w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold mt-0.5">
+              <div class="shrink-0 w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold mt-0.5">
                 {idx() + 1}
               </div>
 
@@ -67,7 +67,7 @@ export default function DerivationBlock(props: {
                 {/* Principle insight */}
                 <Show when={step.insight}>
                   <div class="flex items-start gap-1.5 text-xs text-amber-700 bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">
-                    <span class="flex-shrink-0">💡</span>
+                    <span class="shrink-0">💡</span>
                     <span class="leading-relaxed">{step.insight}</span>
                   </div>
                 </Show>

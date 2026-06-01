@@ -14,7 +14,34 @@ function eulerStep(p: Vec3, v: Vec3, a: Vec3, dt: number): [Vec3, Vec3] {
   return [newP, newV]
 }` },
   ]},
-  { title: "11.3 匀速与匀加速运动", blocks: [
+  { title: "11.3 数值积分方法对比", blocks: [
+    { type: "text", html: `<p>物理引擎每帧需要从加速度更新速度和位置（<strong>数值积分</strong>）。不同方法在精度、稳定性和计算量之间权衡：</p>` },
+    { type: "definition", title: "显式欧拉（Forward Euler）", body: '<strong>最简单但不稳定。v += a·Δt, p += v·Δt。</strong><br/><br/>问题：能量会"漂移"——弹簧振荡振幅逐渐增大，轨道运动半径逐渐膨胀。原因是它用<strong>当前速度</strong>更新位置，但速度在整个 Δt 内实际在变化。' },
+    { type: "definition", title: "半隐式欧拉（Symplectic Euler）", body: '<strong>v += a·Δt, p += v_new·Δt</strong> —— 先更新速度，再用<strong>新速度</strong>更新位置。<br/><br/>比显式欧拉稳定得多，能量近似守恒。是大多数简单物理引擎的默认选择。额外成本几乎为零（只是变量使用顺序不同）。' },
+    { type: "definition", title: "Verlet 积分", body: '<strong>p_next = 2p - p_prev + a·Δt²</strong> —— 不需要显式存储速度。<br/><br/>优势：速度隐式包含在前后位置差中，约束（如距离约束、碰撞）处理极为方便。布料、绳索、分子动力学模拟首选。' },
+    { type: "definition", title: "RK4（四阶龙格-库塔）", body: '每步计算<strong>4 次</strong>加速度（在 t, t+Δt/2, t+Δt 各算一次），取加权平均。<br/><br/>精度最高，但计算量是欧拉的 4 倍。用于需要高精度的场景（如太空轨道模拟），游戏中<strong>极少使用</strong>。' },
+    { type: "code", language: "typescript", code: `// 四种积分方法的对比
+// 显式欧拉 (危险——能量漂移)
+function euler(p: Vec3, v: Vec3, a: Vec3, dt: number) {
+  p.x+=v.x*dt; p.y+=v.y*dt; p.z+=v.z*dt  // 用旧速度
+  v.x+=a.x*dt; v.y+=a.y*dt; v.z+=a.z*dt
+}
+// 半隐式欧拉 (推荐——游戏物理默认)
+function semiEuler(p: Vec3, v: Vec3, a: Vec3, dt: number) {
+  v.x+=a.x*dt; v.y+=a.y*dt; v.z+=a.z*dt  // 先更新速度
+  p.x+=v.x*dt; p.y+=v.y*dt; p.z+=v.z*dt  // 用新速度
+}
+// Verlet (约束友好)
+function verlet(p: Vec3, prev: Vec3, a: Vec3, dt: number): Vec3 {
+  return { x: 2*p.x-prev.x+a.x*dt*dt, y: 2*p.y-prev.y+a.y*dt*dt, z: 2*p.z-prev.z+a.z*dt*dt }
+}` },
+    { type: "note", level: "tip", body: `<strong>选择指南：</strong>普通运动→半隐式欧拉。弹簧/约束→Verlet。高精度轨道→RK4。不要用显式欧拉——它和半隐式欧拉成本相同但稳定性差得多，唯一的"优势"是它被写进了更多教科书。` },
+  ]},
+  { title: "11.4 角速度", blocks: [
+    { type: "text", html: `<p>旋转运动的"速度"不能用标量描述——需要知道<strong>绕哪个轴旋转、多快</strong>。<strong>角速度 ω</strong>是一个向量：方向 = 旋转轴（右手定则），长度 = 角速率（弧度/秒）。</p>` },
+    { type: "formula", latex: `\\mathbf{v} = \\boldsymbol{\\omega} \\times \\mathbf{r}`, note: "切向速度 = 角速度向量 × 位置向量。方向：右手定则，大小：v = ω·r·sinθ。" },
+  ]},
+  { title: "11.5 匀速与匀加速运动", blocks: [
     { type: "text", html: "<p><strong>匀速运动</strong>（a = 0）：物体以恒定速度直线运动。p(t) = p₀ + v t。<strong>匀加速运动</strong>（a 恒定）：物体以恒定加速度运动——如自由落体、抛物线弹道。</p>" },
     { type: "formula", latex: `\\mathbf{v}(t) = \\mathbf{v}_0 + \\mathbf{a} t`, note: "匀加速运动的速度随时间线性变化。" },
   ]},

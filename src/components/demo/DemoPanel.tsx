@@ -61,7 +61,7 @@ export default function DemoPanel(props: DemoPanelProps) {
         }}
       >
         <span
-          class="text-xs font-medium uppercase tracking-wider flex-shrink-0"
+          class="text-xs font-medium uppercase tracking-wider shrink-0"
           classList={{
             "text-gray-400": !isFullscreen(),
             "text-gray-500": isFullscreen(),
@@ -70,7 +70,7 @@ export default function DemoPanel(props: DemoPanelProps) {
           {props.demoId}
         </span>
         <span
-          class="flex-shrink-0"
+          class="shrink-0"
           classList={{
             "text-gray-300": !isFullscreen(),
             "text-gray-600": isFullscreen(),
@@ -92,7 +92,7 @@ export default function DemoPanel(props: DemoPanelProps) {
         <button
           type="button"
           onClick={toggleFullscreen}
-          class="flex-shrink-0 p-1.5 rounded-md transition-colors"
+          class="shrink-0 p-1.5 rounded-md transition-colors"
           classList={{
             "text-gray-400 hover:text-gray-600 hover:bg-gray-200": !isFullscreen(),
             "text-gray-400 hover:text-gray-200 hover:bg-gray-700": isFullscreen(),

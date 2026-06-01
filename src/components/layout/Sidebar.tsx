@@ -1,10 +1,10 @@
 import { A, useParams, useLocation } from "@solidjs/router"
-import { createMemo, createSignal, createEffect, onCleanup, For, Show } from "solid-js"
+import { Accessor, createMemo, createSignal, createEffect, onCleanup, For, Show } from "solid-js"
 import { chapters } from "@/chapters"
 import { chapterSections } from "@/chapters/section-data"
 
 export default function Sidebar(props: {
-  collapsed: boolean
+  collapsed: Accessor<boolean>
   onToggle: () => void
 }) {
   const params = useParams<{ id: string }>()
@@ -46,14 +46,14 @@ export default function Sidebar(props: {
   return (
     <nav class="h-full flex flex-col">
       {/* Header */}
-      <div class="flex items-center justify-between px-4 py-3 border-b border-gray-700 flex-shrink-0">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-gray-700 shrink-0">
         <Show when={!props.collapsed()}>
           <h2 class="text-base font-bold text-white truncate">3D 数学基础</h2>
         </Show>
         <button
           type="button"
           onClick={props.onToggle}
-          class="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors flex-shrink-0"
+          class="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors shrink-0"
           title={props.collapsed() ? "展开侧边栏" : "折叠侧边栏"}
         >
           <svg

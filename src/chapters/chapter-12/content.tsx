@@ -27,7 +27,22 @@ function collisionResponse(m1: number, v1: number, m2: number, v2: number, e: nu
     </table>` },
   ]},
   { title: "12.4 刚体模拟", blocks: [
-    { type: "text", html: "<p><strong>刚体（Rigid Body）</strong>是不会变形的物体。在游戏物理中，刚体有两个状态向量：<strong>线速度 v</strong> 和<strong>角速度 ω</strong>。每帧更新：</p><ul><li>位置 += v·Δt</li><li>朝向（由四元数表示）按角速度 ω 旋转</li></ul><p>现代游戏引擎（PhysX、Havok、Bullet）已经实现了完整的刚体动力学，开发者通常只需配置参数。</p>" },
+    { type: "text", html: "<p><strong>刚体（Rigid Body）</strong>是不会变形的物体。在游戏物理中，刚体有两个状态向量：<strong>线速度 v</strong> 和<strong>角速度 ω</strong>。每帧更新：位置 += v·Δt，朝向（四元数）按 ω 旋转。现代引擎（PhysX/Havok/Bullet）已实现完整刚体动力学。</p>" },
+  ]},
+  { title: "12.5 弹簧与阻尼", blocks: [
+    { type: "text", html: `<p><strong>弹簧-阻尼系统</strong>是游戏中最常见的动态系统之一——摄像机平滑跟随、UI 弹性动画、车辆悬挂、绳索物理都基于它。</p>` },
+    { type: "definition", title: "胡克定律（Hooke's Law）", body: '<strong>F_spring = −k · (x − x_rest)</strong><br/><br/>弹簧力与<strong>偏离平衡位置的距离成正比</strong>，方向<strong>指向平衡位置</strong>。k 是弹簧刚度——k 越大，弹簧越"硬"，回到平衡位置越快。' },
+    { type: "definition", title: "阻尼（Damping）", body: '<strong>F_damping = −b · v</strong><br/><br/>阻尼力与<strong>速度成正比</strong>，方向<strong>与速度相反</strong>（刹车效果）。b 是阻尼系数——b 越大，振荡衰减越快。b=0 时弹簧永远振荡（无能量损耗）。' },
+    { type: "formula", latex: `m \\ddot{x} + b \\dot{x} + k(x - x_{\\text{rest}}) = 0`, note: "弹簧-阻尼系统的二阶微分方程。m=质量，b=阻尼，k=刚度。" },
+    { type: "text", html: `<p><strong>阻尼比 ζ = b / (2√(mk))</strong> 决定了系统的行为：</p><ul><li><strong>ζ < 1（欠阻尼）</strong>：振荡衰减——弹簧来回弹跳后逐渐停止。摄像机平滑跟随的理想状态。</li><li><strong>ζ = 1（临界阻尼）</strong>：最快回到平衡位置而不振荡。UI 动画的理想状态。</li><li><strong>ζ > 1（过阻尼）</strong>：缓慢爬回平衡位置，不振荡——像在蜂蜜中运动。</li></ul>` },
+    { type: "code", language: "typescript", code: `// 摄像机平滑跟随（弹簧-阻尼 + 半隐式欧拉）
+function springFollow(camPos: Vec3, camVel: Vec3, target: Vec3, dt: number) {
+  const k = 10.0   // 刚度——越大跟随越快
+  const b = 5.0    // 阻尼——越大越不振荡
+  const force = { x: -k*(camPos.x-target.x) - b*camVel.x, y: -k*(camPos.y-target.y) - b*camVel.y, z: -k*(camPos.z-target.z) - b*camVel.z }
+  camVel.x += force.x*dt; camVel.y += force.y*dt; camVel.z += force.z*dt
+  camPos.x += camVel.x*dt; camPos.y += camVel.y*dt; camPos.z += camVel.z*dt
+}` },
   ]},
   { title: "本章小结", blocks: [
     { type: "text", html: "<ul><li>✅ 牛顿三定律及其在游戏中的应用</li><li>✅ 动量与冲量——碰撞响应的数学基础</li><li>✅ 旋转动力学与线性动力学的对应关系</li><li>✅ 刚体模拟的基本原理</li></ul>" },

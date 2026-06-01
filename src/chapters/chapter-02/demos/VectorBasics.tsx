@@ -103,7 +103,7 @@ export function setupScene(scene: any, engine: any) {
   function createBillboardLabel(name: string, position: Vector3, text: string, color: string) {
     const texW = 256; const texH = 64
     const tex = new DynamicTexture(`tex_${name}`, { width: texW, height: texH }, scene, false)
-    const ctx = tex.getContext()
+    const ctx = tex.getContext() as CanvasRenderingContext2D
     ctx.clearRect(0, 0, texW, texH)
     ctx.fillStyle = "rgba(8,8,14,0.55)"
     ctx.beginPath()

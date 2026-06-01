@@ -48,7 +48,7 @@ export default function DemoBlock(props: { demoId: string; chapterId: string }) 
       >
         {/* Expand/collapse icon */}
         <svg
-          class={`w-4 h-4 text-indigo-400 transition-transform duration-200 flex-shrink-0 ${
+          class={`w-4 h-4 text-indigo-400 transition-transform duration-200 shrink-0 ${
             expanded() ? "rotate-90" : ""
           }`}
           fill="none"
@@ -64,7 +64,7 @@ export default function DemoBlock(props: { demoId: string; chapterId: string }) 
         </svg>
 
         {/* Demo icon */}
-        <span class="text-lg flex-shrink-0">🎮</span>
+        <span class="text-lg shrink-0">🎮</span>
 
         {/* Title area */}
         <div class="flex-1 min-w-0">
@@ -74,7 +74,7 @@ export default function DemoBlock(props: { demoId: string; chapterId: string }) 
 
         {/* Status badge */}
         <span
-          class={`text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${
+          class={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${
             expanded()
               ? "bg-indigo-100 text-indigo-700"
               : "bg-gray-100 text-gray-500"

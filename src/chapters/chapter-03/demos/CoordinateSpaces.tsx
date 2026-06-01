@@ -21,7 +21,7 @@ function makeLabel(
 ) {
   const tw = 256; const th = 64
   const tex = new DynamicTexture(`tex_${name}`, { width: tw, height: th }, scene, false)
-  const ctx = tex.getContext()
+  const ctx = tex.getContext() as CanvasRenderingContext2D
   ctx.clearRect(0, 0, tw, th)
   ctx.fillStyle = "rgba(8,8,14,0.5)"
   ctx.beginPath()

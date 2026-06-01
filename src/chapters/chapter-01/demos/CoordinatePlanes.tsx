@@ -36,7 +36,7 @@ function makeAxisLabel(
   const texW = 128
   const texH = 64
   const texture = new DynamicTexture(`tex_${name}`, { width: texW, height: texH }, scene, false)
-  const ctx = texture.getContext()
+  const ctx = texture.getContext() as CanvasRenderingContext2D
   // Fill with fully transparent background
   ctx.clearRect(0, 0, texW, texH)
   // Semi-transparent dark pill behind text for readability
