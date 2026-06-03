@@ -57,3 +57,10 @@ registerDemo("5", {
   title: "正交投影演示：投影到坐标平面",
   loader: () => import("@/chapters/chapter-05/demos/OrthographicProjection"),
 })
+
+// Chapter 6: More on Matrices
+registerDemo("6", {
+  id: "transform-pipeline",
+  title: "渲染管线全景：模型空间 → 世界空间 → 相机空间 → 屏幕",
+  loader: () => import("@/chapters/chapter-06/demos/TransformPipeline"),
+})
